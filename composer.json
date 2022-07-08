@@ -19,8 +19,22 @@
         "laravel/vapor-core": "^2.22"
     },
     "require-dev": {
+        "laravel/nova": "^4.0",
         "orchestra/testbench": "^6.24.1 || ^7.6",
         "orchestra/canvas": "^6.10.3 || ^7.2.1"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "NovaKit\\NovaOnVapor\\LaravelServiceProvider"
+            ]
+        }
     },
     "prefer-stable": true,
     "minimum-stability": "dev"
