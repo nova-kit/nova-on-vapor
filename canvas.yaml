@@ -1,0 +1,27 @@
+preset: package
+
+namespace: NovaKit\NovaOnVapor
+user-auth-provider: App\Models\User
+
+paths:
+  src: src
+  resource: resources
+
+factory:
+  path: database/factories
+
+migration:
+  path: database/migrations
+  prefix: ''
+
+console:
+  namespace: NovaKit\NovaOnVapor\Console
+
+model:
+  namespace: NovaKit\NovaOnVapor
+
+provider:
+  namespace: NovaKit\NovaOnVapor
+
+testing:
+  namespace: NovaKit\NovaOnVapor\Tests
