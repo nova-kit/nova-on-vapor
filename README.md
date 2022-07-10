@@ -7,6 +7,11 @@ Laravel Nova on Laravel Vapor
 [![Latest Unstable Version](https://poser.pugx.org/nova-kit/nova-on-vapor/v/unstable)](https://packagist.org/packages/nova-kit/nova-on-vapor)
 [![License](https://poser.pugx.org/nova-kit/nova-on-vapor/license)](https://packagist.org/packages/nova-kit/nova-on-vapor)
 
+This library attempts to solves several limitations when using Laravel Nova on Laravel Vapor including:
+
+* Unable to use interactive mode on Artisan affecting `nova:user` command.
+* Ability to use `VaporFile` and `VaporImage` locally via Minio.
+
 ## Installation
 
 To install through composer, run the following command from terminal:
