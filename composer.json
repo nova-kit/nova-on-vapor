@@ -14,6 +14,11 @@
             "NovaKit\\NovaOnVapor\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "NovaKit\\NovaOnVapor\\Tests\\": "tests/"
+        }
+    },
     "require": {
         "php": "^7.3 || ^8.0",
         "laravel/vapor-core": "^2.22"

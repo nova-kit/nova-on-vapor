@@ -26,6 +26,8 @@ class UserCommand extends Command
 
     protected $createUserOptions;
 
+    protected $originalCreateUserCommandCallback;
+
     /**
      * Configure the command options.
      *
@@ -38,8 +40,10 @@ class UserCommand extends Command
         $this->setName($this->name)
             ->setDescription($this->description);
 
+        $this->originalCreateUserCommandCallback = Nova::$createUserCommandCallback;
+
         $this->createUserOptions = new Util\CreateUserOptions(
-            Nova::$createUserCommandCallback ?? function ($command) {
+            $this->originalCreateUserCommandCallback ?? function ($command) {
                 return [
                     $command->ask('Name'),
                     $command->ask('Email Address'),
@@ -58,13 +62,13 @@ class UserCommand extends Command
      */
     public function handle()
     {
-        tap(Nova::$createUserCommandCallback, function ($originalCreateUserCommandCallback) {
-            Nova::$createUserCommandCallback = $this->createUserOptions->toCommandCallback();
+        $this->input->setInteractive(false);
 
-            Nova::createUser($this);
+        Nova::$createUserCommandCallback = $this->createUserOptions->toCommandCallback($this);
 
-            Nova::$createUserCommandCallback = $originalCreateUserCommandCallback;
-        });
+        Nova::createUser($this);
+
+        Nova::$createUserCommandCallback = $this->originalCreateUserCommandCallback;
 
         return Command::SUCCESS;
     }

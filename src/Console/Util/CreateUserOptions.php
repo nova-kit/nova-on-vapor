@@ -41,18 +41,18 @@ class CreateUserOptions
 
     public function toCommandCallback(Command $command): Closure
     {
-        return function ($command) {
+        return function () use ($command) {
             return $this->questions->transform(function ($question) use ($command) {
-                $key = $option[0];
-                $variant = $option[2];
-                $value = $this->hasOption($key) ? $this->option($key) : null;
+                $key = $question[0];
+                $variant = $question[2];
+                $value = $command->hasOption($key) ? $command->option($key) : null;
 
                 if ($variant === InputOption::VALUE_REQUIRED && is_null($value)) {
                     throw new InvalidArgumentException("Missing --{$key} option");
                 }
 
                 if ($key === 'password' && empty($value) && $variant === InputOption::VALUE_OPTIONAL) {
-                    $value = Str::random(8);
+                    $value = config('nova-on-vapor.user.password') ?? Str::random(8);
                 }
 
                 return $value;
