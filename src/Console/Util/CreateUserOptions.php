@@ -99,7 +99,7 @@ class CreateUserOptions
                 }
 
                 if ($key === 'password' && empty($value) && $variant === InputOption::VALUE_OPTIONAL) {
-                    $value = config('nova-on-vapor.user.password') ?? Str::random(8);
+                    $value = config('nova-on-vapor.user.default-password') ?? Str::random(8);
                 }
 
                 return $value;
