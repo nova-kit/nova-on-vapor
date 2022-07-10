@@ -9,8 +9,9 @@ Laravel Nova on Laravel Vapor
 
 This library attempts to solves several limitations when using Laravel Nova on Laravel Vapor including:
 
-* Unable to use interactive mode on Artisan affecting `nova:user` command.
-* Ability to use `VaporFile` and `VaporImage` locally via Minio.
+* [x] Unable to use interactive mode on Artisan affecting `nova:user` command.
+* [x] Ability to use `VaporFile` and `VaporImage` locally via Minio.
+* [ ] `ExportAsCsv` supports for Laravel Vapor
 
 ## Installation
 
