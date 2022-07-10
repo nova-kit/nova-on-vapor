@@ -39,3 +39,21 @@ You can setup Minio locally and use it as a replacement for S3 locally. First yo
 
 ```bash
 composer require "league/flysystem-aws-s3-v3"
+```
+
+Next, you need to enable and configure Minio:
+
+```ini
+NOVA_ON_VAPOR_ENABLES_MINIO=(true)
+
+MINIO_USERNAME=
+MINIO_PASSWORD=
+MINIO_ENDPOINT=
+
+AWS_ACCESS_KEY_ID="${MINIO_USERNAME}"
+AWS_SECRET_ACCESS_KEY="${MINIO_PASSWORD}"
+AWS_DEFAULT_REGION=us-east-1
+AWS_BUCKET=local
+AWS_ENDPOINT="${MINIO_ENDPOINT}"
+AWS_USE_PATH_STYLE_ENDPOINT=(true)
+```
