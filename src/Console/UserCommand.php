@@ -3,9 +3,12 @@
 namespace NovaKit\NovaOnVapor\Console;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Laravel\Nova\Nova;
+use Laravel\Nova\Util;
+use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
 use Symfony\Component\Console\Input\InputOption;
 
 class UserCommand extends Command
@@ -42,14 +45,8 @@ class UserCommand extends Command
 
         $this->originalCreateUserCommandCallback = Nova::$createUserCommandCallback;
 
-        $this->createUserOptions = new Util\CreateUserOptions(
-            $this->originalCreateUserCommandCallback ?? function ($command) {
-                return [
-                    $command->ask('Name'),
-                    $command->ask('Email Address'),
-                    $command->secret('Password'),
-                ];
-            }
+        $this->createUserOptions = new CreateUserOptions(
+            $this->originalCreateUserCommandCallback ?? static::defaultCreateUserCommandCallback()
         );
 
         $this->createUserOptions->toCommandOptions($this);
@@ -64,12 +61,49 @@ class UserCommand extends Command
     {
         $this->input->setInteractive(false);
 
-        Nova::$createUserCommandCallback = $this->createUserOptions->toCommandCallback($this);
+        Nova::createUserUsing(
+            $this->createUserOptions->toCommandCallback($this),
+            Nova::$createUserCallback ?? static::defaultCreateUserCallback()
+        );
 
         Nova::createUser($this);
 
         Nova::$createUserCommandCallback = $this->originalCreateUserCommandCallback;
 
         return Command::SUCCESS;
+    }
+
+    /**
+     * Get the default callback used for the create user command.
+     *
+     * @return \Closure(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array
+     */
+    protected static function defaultCreateUserCommandCallback()
+    {
+        return function ($command) {
+            return [
+                $command->ask('Name'),
+                $command->ask('Email Address'),
+                $command->secret('Password'),
+            ];
+        };
+    }
+
+    /**
+     * Get the default callback used for creating new Nova users.
+     *
+     * @return \Closure(string, string, string):\Illuminate\Database\Eloquent\Model
+     */
+    protected static function defaultCreateUserCallback()
+    {
+        return function ($name, $email, $password) {
+            $model = Util::userModel();
+
+            return tap((new $model())->forceFill([
+                'name' => $name,
+                'email' => $email,
+                'password' => Hash::make($password),
+            ]))->save();
+        };
     }
 }
