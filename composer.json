@@ -36,6 +36,9 @@
         }
     ],
     "extra": {
+        "branch-alias": {
+            "dev-main": "1.x-dev"
+        },
         "laravel": {
             "providers": [
                 "NovaKit\\NovaOnVapor\\LaravelServiceProvider"
