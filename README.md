@@ -20,3 +20,21 @@ To install through composer, run the following command from terminal:
 ```bash 
 composer require "nova-kit/nova-on-vapor"
 ```
+
+## Usages
+
+### New `nova:vapor-user` Command
+
+The command swaps interactive mode questions to artisan command options, so you can use `--email`, `--name` and optionally `--password`, as an example:
+
+```bash
+php artisan nova:vapor-user --name="Administrator" --email="nova@laravel.com"
+```
+
+> Without passing `--password`, the code would generate a random 8 character password and you can use the Forgot Password feature to reset the value. Using `--password` is possible but be aware that the value will be logged to CloudWatch.
+
+### Minio for `VaporFile` and `VaporImage` locally
+
+You can setup Minio locally and use it as a replacement for S3 locally. 
+
+#### Installation
