@@ -24,7 +24,7 @@ class UserCommand extends Command
      */
     protected $description = 'Create a new user';
 
-    protected $createUserCommandOptions;
+    protected $createUserOptions;
 
     /**
      * Configure the command options.
@@ -38,10 +38,17 @@ class UserCommand extends Command
         $this->setName($this->name)
             ->setDescription($this->description);
 
-        $this->createUserCommandOptions = collect(config('nova-on-vapor.user'))
-            ->each(function ($option) {
-                $this->addOption(...$option);
-            });
+        $this->createUserOptions = new Util\CreateUserOptions(
+            Nova::$createUserCommandCallback ?? function ($command) {
+                return [
+                    $command->ask('Name'),
+                    $command->ask('Email Address'),
+                    $command->secret('Password'),
+                ];
+            }
+        );
+
+        $this->createUserOptions->toCommandOptions($this);
     }
 
     /**
@@ -51,27 +58,13 @@ class UserCommand extends Command
      */
     public function handle()
     {
-        Nova::$createUserCommandCallback = function ($command) {
-            return $this->createUserCommandOptions->transform(function ($option) {
-                $key = $option[0];
-                $variant = $option[2];
-                $value = $this->hasOption($key) ? $this->option($key) : null;
+        tap(Nova::$createUserCommandCallback, function ($originalCreateUserCommandCallback) {
+            Nova::$createUserCommandCallback = $this->createUserOptions->toCommandCallback();
 
-                if ($variant === InputOption::VALUE_REQUIRED && is_null($value)) {
-                    throw new InvalidArgumentException("Missing --{$key} option");
-                }
+            Nova::createUser($this);
 
-                if ($key === 'password' && empty($value) && $variant === InputOption::VALUE_OPTIONAL) {
-                    $value = Str::random(8);
-                }
-
-                return $value;
-            })->all();
-        };
-
-        call_user_func(Nova::$createUserCommandCallback, $this);
-
-        // Nova::createUser($this);
+            Nova::$createUserCommandCallback = $originalCreateUserCommandCallback;
+        });
 
         return Command::SUCCESS;
     }
