@@ -35,6 +35,7 @@ php artisan nova:vapor-user --name="Administrator" --email="nova@laravel.com"
 
 ### Minio for `VaporFile` and `VaporImage` locally
 
-You can setup Minio locally and use it as a replacement for S3 locally. 
+You can setup Minio locally and use it as a replacement for S3 locally. First you need to install `league/flysystem-aws-s3-v3` by running the following command:
 
-#### Installation
+```bash
+composer require "league/flysystem-aws-s3-v3"
