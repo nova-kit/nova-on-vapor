@@ -27,8 +27,18 @@ class UserCommand extends Command
      */
     protected $description = 'Create a new user';
 
+    /**
+     * The create user options instance.
+     *
+     * @var \NovaKit\NovaOnVapor\Console\Util\CreateUserOptions
+     */
     protected $createUserOptions;
 
+    /**
+     * The original create user command callback.
+     *
+     * @var (\Closure(\Illuminate\Console\Command): array)|null
+     */
     protected $originalCreateUserCommandCallback;
 
     /**
