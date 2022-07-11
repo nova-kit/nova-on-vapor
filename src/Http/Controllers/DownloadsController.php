@@ -22,9 +22,13 @@ class DownloadsController extends Controller
         $filename = $request->input('filename');
 
         if ($request->boolean('deleteFileAfterSend') === true) {
-            dispatch_sync(function () use ($disk, $filename) {
+            dispatch(function () use ($disk, $filename) {
                 Storage::disk($disk)->delete($filename);
-            })->afterResponse();
+            })->onConnection(
+                config('nova-on-vapor.actions.queues.connection')
+            )->onQueue(
+                config('nova-on-vapor.actions.queues.queue')
+            )->afterResponse();
         }
 
         return Storage::disk($disk)->download($filename);
