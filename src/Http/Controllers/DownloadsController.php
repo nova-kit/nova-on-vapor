@@ -18,8 +18,15 @@ class DownloadsController extends Controller
     {
         abort_unless($request->filled(['filename']), 404);
 
-        // Dispatch deleting file after download.
+        $disk = $request->input('disk');
+        $filename = $request->input('filename');
 
-        return Storage::disk($request->input('disk'))->download($request->input('filename'));
+        if ($request->boolean('deleteFileAfterSend') === true) {
+            dispatch_sync(function () use ($disk, $filename) {
+                Storage::disk($disk)->delete($filename);
+            })->afterResponse();
+        }
+
+        return Storage::disk($disk)->download($filename);
     }
 }
