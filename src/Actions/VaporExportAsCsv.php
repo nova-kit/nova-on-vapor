@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Actions\Response;
@@ -21,6 +22,13 @@ class VaporExportAsCsv extends ExportAsCsv
      * @var string|null
      */
     public $storageDisk;
+
+    /**
+     * Determine if file should be deleted after send.
+     *
+     * @var bool
+     */
+    public $deleteFileAfterSend = false;
 
     /**
      * Construct a new action instance.
@@ -45,6 +53,13 @@ class VaporExportAsCsv extends ExportAsCsv
     public function withStorageDisk($storageDisk)
     {
         $this->storageDisk = $storageDisk;
+
+        return $this;
+    }
+
+    public function deleteFileAfterSend(bool $deleteFileAfterSend = true)
+    {
+        $this->deleteFileAfterSend = $deleteFileAfterSend;
 
         return $this;
     }
@@ -89,20 +104,6 @@ class VaporExportAsCsv extends ExportAsCsv
             $fields->get('writerType') ?? $extension
         );
 
-        return $response->successful([
-            $this->dispatchExportUsing($eloquentGenerator, $filename),
-        ]);
-    }
-
-    /**
-     * Handle exporting the file.
-     *
-     * @param  \Closure():\Generator  $generator
-     * @param  string  $filename
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function dispatchExportUsing($generator, $filename)
-    {
         $exportedFilename = (new FastExcel($generator()))->export("/tmp/{$filename}", $this->withFormatCallback);
 
         $storedFilename = Storage::disk($this->storageDisk)->putFileAs(
@@ -111,8 +112,17 @@ class VaporExportAsCsv extends ExportAsCsv
 
         (new Filesystem())->delete($exportedFilename);
 
-        return response()->json(
-            //static::download(Storage::disk($this->storageDisk)->url($storedFilename), $filename)
-        );
+        return $response->successful([
+            response()->json(
+                static::download(
+                    URL::signedRoute('nova-on-vapor.download', array_filter([
+                        'disk' => $this->storageDisk,
+                        'filename' => $storedFilename,
+                        'deleteFileAfterSend' => $this->deleteFileAfterSend ? 1 : 0,
+                    ]),
+                    $filename
+                )
+            )
+        ]);
     }
 }
