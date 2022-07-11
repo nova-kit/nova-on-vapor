@@ -110,10 +110,10 @@ class VaporExportAsCsv extends ExportAsCsv
             $fields->get('writerType') ?? $extension
         );
 
-        $exportedFilename = (new FastExcel($eloquentGenerator()))->export("/tmp/{$filename}", $this->withFormatCallback);
+        $exportedFilename = (new FastExcel($eloquentGenerator()))->export("/tmp/{$exportFilename}", $this->withFormatCallback);
 
         $storedFilename = Storage::disk($this->storageDisk)->putFileAs(
-            'nova-actions-export-as-csv', new File($exportedFilename), $filename, 'public'
+            'nova-actions-export-as-csv', new File($exportedFilename), $exportFilename, 'public'
         );
 
         (new Filesystem())->delete($exportedFilename);
