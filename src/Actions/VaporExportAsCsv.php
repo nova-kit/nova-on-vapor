@@ -57,6 +57,12 @@ class VaporExportAsCsv extends ExportAsCsv
         return $this;
     }
 
+    /**
+     * Set to delete file after send.
+     *
+     * @param  bool  $deleteFileAfterSend
+     * @return $this
+     */
     public function deleteFileAfterSend(bool $deleteFileAfterSend = true)
     {
         $this->deleteFileAfterSend = $deleteFileAfterSend;
@@ -104,7 +110,7 @@ class VaporExportAsCsv extends ExportAsCsv
             $fields->get('writerType') ?? $extension
         );
 
-        $exportedFilename = (new FastExcel($generator()))->export("/tmp/{$filename}", $this->withFormatCallback);
+        $exportedFilename = (new FastExcel($eloquentGenerator()))->export("/tmp/{$filename}", $this->withFormatCallback);
 
         $storedFilename = Storage::disk($this->storageDisk)->putFileAs(
             'nova-actions-export-as-csv', new File($exportedFilename), $filename, 'public'
@@ -119,7 +125,7 @@ class VaporExportAsCsv extends ExportAsCsv
                         'disk' => $this->storageDisk,
                         'filename' => $storedFilename,
                         'deleteFileAfterSend' => $this->deleteFileAfterSend ? 1 : 0,
-                    ]),
+                    ])),
                     $filename
                 )
             )
