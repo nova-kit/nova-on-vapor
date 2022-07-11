@@ -31,7 +31,9 @@ The command swaps interactive mode questions to artisan command options, so you 
 php artisan nova:vapor-user --name="Administrator" --email="nova@laravel.com"
 ```
 
-> Without passing `--password`, the code would generate a random 8 character password and you can use the Forgot Password feature to reset the value. Using `--password` is possible but be aware that the value will be logged to CloudWatch.
+> **Note**: Without passing `--password`, the code would generate a random 8 character password and you can use the Forgot Password feature to reset the value.
+
+> **Warning**: Using `--password` is possible but be aware that the value will be logged to CloudWatch.
 
 ### Minio for `VaporFile` and `VaporImage` locally
 
