@@ -53,7 +53,7 @@ jobs:
           composer-options: "--prefer-dist --no-cache"
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --testdox
 
   tests-on-php-7:
     runs-on: ${{ matrix.os }}
