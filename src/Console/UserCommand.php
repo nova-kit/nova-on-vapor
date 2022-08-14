@@ -4,12 +4,9 @@ namespace NovaKit\NovaOnVapor\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-use InvalidArgumentException;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
 use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
-use Symfony\Component\Console\Input\InputOption;
 
 class UserCommand extends Command
 {

@@ -21,7 +21,7 @@ class CreateUserOptions
     /**
      * Construct a new Create User Options.
      *
-     * @param callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array  $callback
+     * @param  callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array  $callback
      */
     public function __construct(callable $callback)
     {

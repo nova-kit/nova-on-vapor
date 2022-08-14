@@ -5,10 +5,7 @@ namespace NovaKit\NovaOnVapor;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Nova\Http\Middleware\Authorize;
-use Laravel\Nova\Nova;
 use Laravel\Vapor\Contracts\SignedStorageUrlController as SignedStorageUrlControllerContract;
-use Symfony\Component\Console\Input\InputArgument;
 
 class LaravelServiceProvider extends ServiceProvider
 {

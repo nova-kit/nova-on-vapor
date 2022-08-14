@@ -2,7 +2,6 @@
 
 namespace NovaKit\NovaOnVapor\Tests\Feature\Console;
 
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use NovaKit\NovaOnVapor\Tests\TestCase;
 

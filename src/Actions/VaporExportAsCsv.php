@@ -128,7 +128,7 @@ class VaporExportAsCsv extends ExportAsCsv
                     ])),
                     $filename
                 )
-            )
+            ),
         ]);
     }
 }

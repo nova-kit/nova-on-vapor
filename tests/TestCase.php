@@ -8,7 +8,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
      * Get package providers.
      *
      * @param  \Illuminate\Foundation\Application  $app
-     *
      * @return array
      */
     protected function getPackageProviders($app)
@@ -16,7 +15,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
         return [
             \NovaKit\NovaOnVapor\LaravelServiceProvider::class,
         ];
-}
+    }
 
     /**
      * Ignore package discovery from.
