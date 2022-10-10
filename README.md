@@ -11,7 +11,7 @@ This library attempts to solves several limitations when using Laravel Nova on L
 
 * [x] Unable to use interactive mode on Artisan affecting `nova:user` command.
 * [x] Ability to use `VaporFile` and `VaporImage` locally via Minio.
-* [ ] `ExportAsCsv` supports for Laravel Vapor
+* [x] `ExportAsCsv` supports for Laravel Vapor
 
 ## Installation
 
@@ -59,3 +59,34 @@ AWS_BUCKET=local
 AWS_ENDPOINT="${MINIO_ENDPOINT}"
 AWS_USE_PATH_STYLE_ENDPOINT=(true)
 ```
+
+### CSV Export
+
+You can replace `Laravel\Nova\Actions\ExportAsCsv` with `NovaKit\NovaOnVapor\Actions\VaporExportAsCsv`:
+
+```php
+use Laravel\Nova\Actions\ExportAsCsv;
+use NovaKit\NovaOnVapor\Actions\VaporExportAsCsv;
+
+/**
+ * Get the actions available for the resource.
+ *
+ * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+ * @return array
+ */
+public function actions(NovaRequest $request)
+{
+    return [
+        VaporExportAsCsv::make(),
+    ];
+}
+```
+
+If you would like to change the storage disk to store the CSV file that is available for download, you may invoke the `withStorageDisk()` method when registering the action:
+
+```php
+return [
+    VaporExportAsCsv::make()->withStorageDisk('s3'),
+];
+```
+
