@@ -49,11 +49,12 @@ class VaporQueuedExportAsCsv extends VaporExportAsCsv
 
         $job = new QueuedExportAsCsv(
             serialize($query),
-            $request->user(),
+            $request->user()->getKey(),
             $this->withFormatCallback,
             /* @var array{exportFilename: string, deleteFileAfterSend: bool, storageDisk: string|null, notify: string} */
             [
                 'filename' => $exportFilename,
+                'extension' => $extension,
                 'deleteFileAfterSend' => $this->deleteFileAfterSend,
                 'storageDisk' => $this->storageDisk,
                 'notify' => 'email',

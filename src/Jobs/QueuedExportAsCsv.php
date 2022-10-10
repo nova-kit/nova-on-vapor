@@ -28,11 +28,11 @@ class QueuedExportAsCsv implements ShouldQueue
     public $query;
 
     /**
-     * The user.
+     * The User ID.
      *
-     * @var \Illuminate\Foundation\Auth\User
+     * @var string|int
      */
-    public $user;
+    public $userId;
 
     /**
      * The custom format callback.
@@ -52,15 +52,15 @@ class QueuedExportAsCsv implements ShouldQueue
      * Create a new job instance.
      *
      * @param  array<string, mixed>  $query
-     * @param  \Illuminate\Foundation\Auth\User  $user
+     * @param  string|int  $userId
      * @param  callable  $withFormatCallback
      * @param  array{filename: string, deleteFileAfterSend: bool, storageDisk: string|null, notify: string}  $options
      * @return void
      */
-    public function __construct(array $query, User $user, $withFormatCallback, array $options)
+    public function __construct(array $query, $userId, $withFormatCallback, array $options)
     {
         $this->query = $query;
-        $this->user = $user;
+        $this->userId = $userId;
         $this->withFormatCallback = $withFormatCallback;
 
         $this->options = array_merge([
@@ -85,8 +85,10 @@ class QueuedExportAsCsv implements ShouldQueue
             }
         };
 
+        $userModel = Util::userModel();
         $storageDisk = $this->options['storageDisk'];
         $filename = $this->options['filename'];
+
         $exportedFilename = (new FastExcel($eloquentGenerator()))->export("/tmp/{$filename}", $this->withFormatCallback);
 
         $storedFilename = Storage::disk($storageDisk)->putFileAs(
@@ -95,10 +97,16 @@ class QueuedExportAsCsv implements ShouldQueue
 
         (new Filesystem())->delete($exportedFilename);
 
-        URL::signedRoute('nova-on-vapor.download', array_filter([
+        $url = URL::signedRoute('nova-on-vapor.download', array_filter([
             'disk' => $storageDisk,
             'filename' => $storedFilename,
             'deleteFileAfterSend' => $this->options['deleteFileAfterSend'] ? 1 : 0,
         ]));
+
+        CsvExported::dispatch(
+            $userModel::find($this->userId),
+            $downloadUrl,
+            $this->options,
+        ))
     }
 }
