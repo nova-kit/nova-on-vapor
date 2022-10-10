@@ -2,11 +2,14 @@
 
 namespace NovaKit\NovaOnVapor\Actions;
 
+use Closure;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Response;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\ActionRequest;
+use NovaKit\NovaOnVapor\Jobs\QueuedExportAsCsv;
 use function Laravie\SerializesQuery\serialize;
 
 class VaporQueuedExportAsCsv extends VaporExportAsCsv implements ShouldQueue
@@ -47,7 +50,7 @@ class VaporQueuedExportAsCsv extends VaporExportAsCsv implements ShouldQueue
             $this->withFormatCallback,
             /* @var array{exportFilename: string, deleteFileAfterSend: bool, storageDisk: string|null, notify: string} */
             [
-                'exportFilename' => $exportFilename,
+                'filename' => $exportFilename,
                 'deleteFileAfterSend' => $this->deleteFileAfterSend,
                 'storageDisk' => $this->storageDisk,
                 'notify' => 'email',
@@ -58,5 +61,11 @@ class VaporQueuedExportAsCsv extends VaporExportAsCsv implements ShouldQueue
         $queue = property_exists($this, 'queue') ? $this->queue : null;
 
         Queue::connection($connection)->pushOn($queue, $job);
+
+        return $response->successful([
+            response()->json(
+                //
+            ),
+        ]);
     }
 }

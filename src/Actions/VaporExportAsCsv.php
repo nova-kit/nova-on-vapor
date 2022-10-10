@@ -8,7 +8,6 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use Laravel\Nova\Actions\DispatchAction;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Actions\Response;
 use Laravel\Nova\Fields\ActionFields;
@@ -72,61 +71,19 @@ class VaporExportAsCsv extends ExportAsCsv
     }
 
     /**
-     * Execute the action for the given request.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @return mixed
-     *
-     * @throws \Laravel\Nova\Exceptions\MissingActionHandlerException|\Throwable
-     */
-    public function handleRequest(ActionRequest $request)
-    {
-        $fields = $request->resolveFields();
-
-        $response = $this->dispatchUsing($request, $fields);
-
-        if (! $response->wasExecuted) {
-            return static::danger(__('Sorry! You are not authorized to perform this action.'));
-        }
-
-        if ($this->thenCallback) {
-            return call_user_func($this->thenCallback, collect($response->results)->flatten());
-        }
-
-        return $this->handleResult($fields, $response->results);
-    }
-
-    /**
-     * Set dispatch using.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @return \Laravel\Nova\Actions\Response
-     */
-    protected function dispatchUsing(ActionRequest $request, ActionFields $fields)
-    {
-        $dispatcher = new DispatchAction($request, $this, $fields);
-
-        $dispatcher->handleUsing($request, function ($request, $response, $fields) {
-            $this->then($this->dispatchRequestUsingCallback($request, $response, $fields, $dipatcher));
-
-            return $this->dispatchRequestUsing($request, $response, $fields, $dipatcher);
-        });
-
-        return $dispatcher->dispatch();
-    }
-
-    /**
      * Perform the action request using custom dispatch handler.
      *
      * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @param  \Laravel\Nova\Actions\Response  $response
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Laravel\Nova\Actions\DispatchAction  $dispatcher
      * @return \Laravel\Nova\Actions\Response
      */
-    protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields, DispatchAction $dispatcher)
+    protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields)
     {
+        $this->then(function ($results) {
+            return $results->first();
+        });
+
         $query = $request->toSelectedResourceQuery();
 
         $query->when($this->withQueryCallback instanceof Closure, function ($query) use ($fields) {
@@ -173,21 +130,5 @@ class VaporExportAsCsv extends ExportAsCsv
                 )
             ),
         ]);
-    }
-
-    /**
-     * Handle dispatch request using results.
-     *
-     * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
-     * @param  \Laravel\Nova\Actions\Response  $response
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Laravel\Nova\Actions\DispatchAction  $dispatcher
-     * @return \Closure
-     */
-    protected function handleDispatchRequestUsingResult(ActionRequest $request, Response $response, ActionFields $fields, DispatchAction $dispatcher)
-    {
-        $this->then(function ($results) {
-            return $results->first();
-        });
     }
 }
