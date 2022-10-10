@@ -5,6 +5,7 @@ namespace NovaKit\NovaOnVapor\Jobs;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\File;
 use Illuminate\Queue\InteractsWithQueue;
@@ -22,7 +23,7 @@ class QueuedExportAsCsv implements ShouldQueue
     /**
      * The query builder.
      *
-     * @var \Illuminate\Database\Eloquent\Builder
+     * @var array<string, mixed>
      */
     public $query;
 
@@ -56,9 +57,9 @@ class QueuedExportAsCsv implements ShouldQueue
      * @param  array{filename: string, deleteFileAfterSend: bool, storageDisk: string|null, notify: string}  $options
      * @return void
      */
-    public function __construct($query, $user, $withFormatCallback, array $options)
+    public function __construct(array $query, User $user, $withFormatCallback, array $options)
     {
-        $this->query = unserialize($query);
+        $this->query = $query;
         $this->user = $user;
         $this->withFormatCallback = $withFormatCallback;
 
@@ -76,8 +77,10 @@ class QueuedExportAsCsv implements ShouldQueue
      */
     public function handle()
     {
-        $eloquentGenerator = function () {
-            foreach ($this->query->cursor() as $model) {
+        $query = unserialize($this->query);
+
+        $eloquentGenerator = function () use ($query) {
+            foreach ($query->cursor() as $model) {
                 yield $model;
             }
         };

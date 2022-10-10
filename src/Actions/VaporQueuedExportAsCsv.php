@@ -3,7 +3,6 @@
 namespace NovaKit\NovaOnVapor\Actions;
 
 use Closure;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Response;
@@ -12,7 +11,7 @@ use Laravel\Nova\Http\Requests\ActionRequest;
 use NovaKit\NovaOnVapor\Jobs\QueuedExportAsCsv;
 use function Laravie\SerializesQuery\serialize;
 
-class VaporQueuedExportAsCsv extends VaporExportAsCsv implements ShouldQueue
+class VaporQueuedExportAsCsv extends VaporExportAsCsv
 {
     /**
      * Perform the action request using custom dispatch handler.
@@ -24,6 +23,10 @@ class VaporQueuedExportAsCsv extends VaporExportAsCsv implements ShouldQueue
      */
     protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields)
     {
+        $this->then(function ($results) {
+            return $results->first();
+        });
+
         $query = $request->toSelectedResourceQuery();
 
         $query->when($this->withQueryCallback instanceof Closure, function ($query) use ($fields) {
@@ -64,7 +67,7 @@ class VaporQueuedExportAsCsv extends VaporExportAsCsv implements ShouldQueue
 
         return $response->successful([
             response()->json(
-                //
+                static::message(__('The action was executed successfully.'))
             ),
         ]);
     }
