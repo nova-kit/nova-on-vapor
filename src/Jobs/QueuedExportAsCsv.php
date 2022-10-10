@@ -12,8 +12,11 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use function Laravie\SerializesQuery\unserialize;
+use Illuminate\Support\Fluent;
+use Laravel\Nova\Util;
+use NovaKit\NovaOnVapor\Events\CsvExported;
 use Rap2hpoutre\FastExcel\FastExcel;
+use function Laravie\SerializesQuery\unserialize;
 
 class QueuedExportAsCsv implements ShouldQueue
 {
@@ -96,7 +99,7 @@ class QueuedExportAsCsv implements ShouldQueue
 
         (new Filesystem())->delete($exportedFilename);
 
-        $url = URL::signedRoute('nova-on-vapor.download', array_filter([
+        $downloadUrl = URL::signedRoute('nova-on-vapor.download', array_filter([
             'disk' => $storageDisk,
             'filename' => $storedFilename,
             'deleteFileAfterSend' => $this->options['deleteFileAfterSend'] ? 1 : 0,
@@ -104,8 +107,9 @@ class QueuedExportAsCsv implements ShouldQueue
 
         CsvExported::dispatch(
             $userModel::find($this->userId),
+            $storedFilename,
+            $storageDisk,
             $downloadUrl,
-            $this->options,
         );
     }
 }
