@@ -46,6 +46,11 @@
             ]
         }
     },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ]
+    },
     "prefer-stable": true,
     "minimum-stability": "dev"
 }
