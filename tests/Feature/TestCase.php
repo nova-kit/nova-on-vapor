@@ -1,9 +1,16 @@
 <?php
 
-namespace NovaKit\NovaOnVapor\Tests;
+namespace NovaKit\NovaOnVapor\Tests\Feature;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
+    /**
+     * Automatically enables package discoveries.
+     *
+     * @var bool
+     */
+    protected $enablesPackageDiscoveries = true;
+
     /**
      * Get package providers.
      *
@@ -14,6 +21,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [
             \NovaKit\NovaOnVapor\LaravelServiceProvider::class,
+            \NovaKit\NovaOnVapor\Tests\Fixtures\Providers\TestServiceProvider::class,
         ];
     }
 
