@@ -108,9 +108,9 @@ class VaporExportAsCsv extends ExportAsCsv
         $dispatcher = new DispatchAction($request, $this, $fields);
 
         $dispatcher->handleUsing($request, function ($request, $response, $fields) {
-            $this->then($this->dispatchRequestUsingCallback($request, $response, $fields));
+            $this->then($this->dispatchRequestUsingCallback($request, $response, $fields, $dipatcher));
 
-            return $this->dispatchRequestUsing($request, $response, $fields);
+            return $this->dispatchRequestUsing($request, $response, $fields, $dipatcher);
         });
 
         return $dispatcher->dispatch();
@@ -122,9 +122,10 @@ class VaporExportAsCsv extends ExportAsCsv
      * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @param  \Laravel\Nova\Actions\Response  $response
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
+     * @param  \Laravel\Nova\Actions\DispatchAction  $dispatcher
      * @return \Laravel\Nova\Actions\Response
      */
-    protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields)
+    protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields, DispatchAction $dispatcher)
     {
         $query = $request->toSelectedResourceQuery();
 
@@ -180,9 +181,10 @@ class VaporExportAsCsv extends ExportAsCsv
      * @param  \Laravel\Nova\Http\Requests\ActionRequest  $request
      * @param  \Laravel\Nova\Actions\Response  $response
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
+     * @param  \Laravel\Nova\Actions\DispatchAction  $dispatcher
      * @return \Closure
      */
-    protected function handleDispatchRequestUsingResult(ActionRequest $request, Response $response, ActionFields $fields)
+    protected function handleDispatchRequestUsingResult(ActionRequest $request, Response $response, ActionFields $fields, DispatchAction $dispatcher)
     {
         $this->then(function ($results) {
             return $results->first();

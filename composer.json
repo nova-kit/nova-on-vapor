@@ -21,7 +21,8 @@
     },
     "require": {
         "php": "^7.3 || ^8.0",
-        "laravel/vapor-core": "^2.22"
+        "laravel/vapor-core": "^2.22",
+        "laravie/serialize-queries": "^2.0"
     },
     "require-dev": {
         "laravel/nova": "^4.14",
