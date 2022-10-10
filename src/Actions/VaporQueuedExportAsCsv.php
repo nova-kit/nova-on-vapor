@@ -8,8 +8,8 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Response;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\ActionRequest;
-use NovaKit\NovaOnVapor\Jobs\QueuedExportAsCsv;
 use function Laravie\SerializesQuery\serialize;
+use NovaKit\NovaOnVapor\Jobs\QueuedExportAsCsv;
 
 class VaporQueuedExportAsCsv extends VaporExportAsCsv
 {

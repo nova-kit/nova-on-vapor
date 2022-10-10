@@ -12,9 +12,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Fluent;
-use Rap2hpoutre\FastExcel\FastExcel;
 use function Laravie\SerializesQuery\unserialize;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class QueuedExportAsCsv implements ShouldQueue
 {
@@ -107,6 +106,6 @@ class QueuedExportAsCsv implements ShouldQueue
             $userModel::find($this->userId),
             $downloadUrl,
             $this->options,
-        ))
+        );
     }
 }
