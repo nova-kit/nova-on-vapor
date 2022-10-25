@@ -22,7 +22,6 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "laravel/vapor-core": "^2.22",
-        "laravie/serialize-queries": "^2.0",
         "nova-kit/nova-queued-export-as-csv": "^0.1"
     },
     "require-dev": {
