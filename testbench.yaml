@@ -1,2 +1,6 @@
 providers:
   - NovaKit\NovaOnVapor\LaravelServiceProvider
+  - NovaKit\NovaOnVapor\Tests\NovaServiceProvider
+
+env:
+  - SEND_QUERIES_TO_RAY=false

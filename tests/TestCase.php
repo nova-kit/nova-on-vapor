@@ -1,6 +1,6 @@
 <?php
 
-namespace NovaKit\NovaOnVapor\Tests\Feature;
+namespace NovaKit\NovaOnVapor\Tests;
 
 class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -21,7 +21,7 @@ class TestCase extends \Orchestra\Testbench\TestCase
     {
         return [
             \NovaKit\NovaOnVapor\LaravelServiceProvider::class,
-            \NovaKit\NovaOnVapor\Tests\Fixtures\Providers\TestServiceProvider::class,
+            \NovaKit\NovaOnVapor\Tests\NovaServiceProvider::class,
         ];
     }
 

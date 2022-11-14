@@ -3,7 +3,7 @@
 namespace NovaKit\NovaOnVapor\Tests\Feature\Console;
 
 use Illuminate\Support\Facades\Auth;
-use NovaKit\NovaOnVapor\Tests\Feature\TestCase;
+use NovaKit\NovaOnVapor\Tests\TestCase;
 
 class UserCommandTest extends TestCase
 {
