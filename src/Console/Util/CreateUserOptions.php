@@ -29,6 +29,18 @@ class CreateUserOptions
     }
 
     /**
+     * Confirm a question with the user.
+     *
+     * @param  string  $question
+     * @param  string|null  $default
+     * @return array
+     */
+    public function confirm(string $question, $default = false)
+    {
+        return [$this->parseQuestion($question), null, InputOption::VALUE_NONE, ''];
+    }
+
+    /**
      * Prompt the user for input.
      *
      * @param  string  $question
