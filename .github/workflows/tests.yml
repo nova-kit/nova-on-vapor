@@ -24,6 +24,11 @@ jobs:
           - "9.x"
         experimental:
           - false
+        include:
+          - php: "8.2"
+          - dependencies: "highest"
+          - laravel: "9.x"
+          - experimental: false
 
     name: Laravel ${{ matrix.laravel }} on PHP${{ matrix.php }}-${{ matrix.os }} (${{ matrix.dependencies }})
 
