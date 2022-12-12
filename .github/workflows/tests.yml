@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  tests:
+  tests-on-laravel-9:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -16,19 +16,14 @@ jobs:
         php:
           - "8.0"
           - "8.1"
+          - "8.2"
         dependencies:
           - "highest"
           - "lowest"
         laravel:
-          - "8.x"
           - "9.x"
         experimental:
           - false
-        include:
-          - php: "8.2"
-          - dependencies: "highest"
-          - laravel: "9.x"
-          - experimental: false
 
     name: Laravel ${{ matrix.laravel }} on PHP${{ matrix.php }}-${{ matrix.os }} (${{ matrix.dependencies }})
 
@@ -63,7 +58,7 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --testdox
 
-  tests-on-php-7:
+  tests-on-laravel-8:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -74,6 +69,8 @@ jobs:
         php:
           - "7.3"
           - "7.4"
+          - "8.0"
+          - "8.1"
         dependencies:
           - "highest"
           - "lowest"
