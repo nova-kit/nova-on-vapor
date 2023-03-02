@@ -31,7 +31,7 @@ class CreateUserOptions
     /**
      * Confirm a question with the user.
      *
-     * @param  string|null  $default
+     * @param  string|bool|null  $default
      * @return array
      */
     public function confirm(string $question, $default = false)
