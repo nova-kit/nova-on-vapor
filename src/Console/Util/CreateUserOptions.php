@@ -31,7 +31,6 @@ class CreateUserOptions
     /**
      * Confirm a question with the user.
      *
-     * @param  string  $question
      * @param  string|null  $default
      * @return array
      */
@@ -42,10 +41,6 @@ class CreateUserOptions
 
     /**
      * Prompt the user for input.
-     *
-     * @param  string  $question
-     * @param  string|null  $default
-     * @return array
      */
     public function ask(string $question, ?string $default = null): array
     {
@@ -55,12 +50,9 @@ class CreateUserOptions
     /**
      * Give the user a single choice from an array of answers.
      *
-     * @param  string  $question
-     * @param  array  $choices
      * @param  string|null  $default
      * @param  mixed|null  $attempts
      * @param  bool  $multiple
-     * @return array
      */
     public function choice(string $question, array $choices, $default = null, $attempts = null, $multiple = false): array
     {
@@ -69,10 +61,6 @@ class CreateUserOptions
 
     /**
      * Prompt the user for input but hide the answer from the console.
-     *
-     * @param  string  $question
-     * @param  bool  $fallback
-     * @return array
      */
     public function secret(string $question, bool $fallback = true): array
     {
@@ -81,9 +69,6 @@ class CreateUserOptions
 
     /**
      * Convert to command options.
-     *
-     * @param  \Illuminate\Console\Command  $command
-     * @return void
      */
     public function toCommandOptions(Command $command): void
     {
@@ -95,7 +80,6 @@ class CreateUserOptions
     /**
      * Convert to command callback.
      *
-     * @param  \Illuminate\Console\Command  $command
      * @return \Closure():array<int, mixed>
      */
     public function toCommandCallback(Command $command): Closure
@@ -121,9 +105,6 @@ class CreateUserOptions
 
     /**
      * Parse question key.
-     *
-     * @param  string  $question
-     * @return string
      */
     protected function parseQuestion(string $question): string
     {

@@ -14,7 +14,6 @@ class SignedStorageUrlController extends Controller implements SignedStorageUrlC
     /**
      * Create a new signed URL.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -47,8 +46,6 @@ class SignedStorageUrlController extends Controller implements SignedStorageUrlC
     /**
      * Create a command for the PUT operation.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Aws\S3\S3Client  $client
      * @param  string  $bucket
      * @param  string  $key
      * @return \Aws\CommandInterface
@@ -64,7 +61,6 @@ class SignedStorageUrlController extends Controller implements SignedStorageUrlC
     /**
      * Get the headers that should be used when making the signed request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \Psr\Http\Message\RequestInterface  $signedRequest
      * @return array
      */
