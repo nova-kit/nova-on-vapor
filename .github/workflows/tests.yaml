@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  tests-on-laravel-9:
+  tests-on-laravel-10:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -14,14 +14,13 @@ jobs:
           - "ubuntu-latest"
           - "windows-latest"
         php:
-          - "8.0"
-          - "8.1"
-          - "8.2"
+          - 8.1
+          - 8.2
         dependencies:
           - "highest"
           - "lowest"
         laravel:
-          - "9.x"
+          - "10.x"
         experimental:
           - false
 
@@ -58,7 +57,7 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit --testdox
 
-  tests-on-laravel-8:
+  tests-on-laravel-9:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
@@ -67,15 +66,14 @@ jobs:
           - "ubuntu-latest"
           - "windows-latest"
         php:
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
+          - '8.0'
+          - 8.1
+          - 8.2
         dependencies:
           - "highest"
           - "lowest"
         laravel:
-          - "8.x"
+          - "9.x"
         experimental:
           - false
 
@@ -92,13 +90,13 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, sqlite3, pdo_sqlite, bcmath, fileinfo
           coverage: none
 
-      - name: Install Laravel Framework ${{ matrix.laravel }}
-        run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
-
       - name: "Setup CI Authentication"
         run: |
           composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_PASSWORD }}
+
+      - name: Install Laravel Framework ${{ matrix.laravel }}
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" --no-interaction --no-update
 
       - name: Install dependencies
         uses: "ramsey/composer-install@v2"

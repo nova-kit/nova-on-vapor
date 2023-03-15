@@ -58,7 +58,6 @@
             "@composer audit",
             "@composer run prepare",
             "@php vendor/bin/phpstan analyse",
-            "@php vendor/bin/pint",
             "@composer run test"
         ],
         "test": "@php vendor/bin/phpunit -c ./ --color"
