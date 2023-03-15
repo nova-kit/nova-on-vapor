@@ -5,7 +5,7 @@ on:
   pull_request:
 
 jobs:
-  tests-on-laravel-9:
+  tests-on-laravel-10:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
     strategy:
