@@ -5,6 +5,7 @@ namespace NovaKit\NovaOnVapor;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Nova\Fields\VaporFile;
 use Laravel\Vapor\Contracts\SignedStorageUrlController as SignedStorageUrlControllerContract;
 
 class LaravelServiceProvider extends ServiceProvider
@@ -16,11 +17,32 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerCommands();
+        $this->registerFieldsMacros();
+    }
+
+    /**
+     * Register the tool's commands.
+     *
+     * @return void
+     */
+    protected function registerCommands()
+    {
         if ($this->app->runningInConsole()) {
             $this->commands([
                 Console\UserCommand::class,
             ]);
         }
+    }
+
+    /**
+     * Register fields macros.
+     *
+     * @return void
+     */
+    protected function registerFieldsMacros()
+    {
+        VaporFile::mixin(new Fields\VaporFileMixins());
     }
 
     /**
