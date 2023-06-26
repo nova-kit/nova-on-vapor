@@ -11,32 +11,16 @@ use Illuminate\Support\Facades\Storage;
 class VaporFileMixins
 {
     /**
-     * Get default pivot attributes using mixin.
+     * `downloadViaTemporaryUrl()` macro.
      *
-     * @return \Closure():\Laravel\Nova\Fields\VaporFile
-     */
-    public function downloadViaUrl()
-    {
-        return function () {
-            return $this->download(function ($request, $model, $disk, $value) {
-                return redirect(
-                    Storage::disk($disk)->url($value)
-                );
-            });
-        };
-    }
-
-    /**
-     * Get default pivot attributes using mixin.
-     *
-     * @return \Closure(\DateTimeInterface):\Laravel\Nova\Fields\VaporFile
+     * @return \Closure(\DateTimeInterface|null):\Laravel\Nova\Fields\VaporFile
      */
     public function downloadViaTemporaryUrl()
     {
-        return function (DateTimeInterface $expiration) {
+        return function (DateTimeInterface $expiration = null) {
             return $this->download(function ($request, $model, $disk, $value) use ($expiration) {
                 return redirect(
-                    Storage::disk($disk)->temporaryUrl($value, $expiration)
+                    Storage::disk($disk)->temporaryUrl($value, $expiration ?? now()->addMinutes(5))
                 );
             });
         };
