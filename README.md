@@ -90,3 +90,10 @@ return [
 ];
 ```
 
+### `downloadViaTemporaryUrl` Mixin
+
+Laravel Vapor has a response limit of 6MB and this would cause issue when you need to download large files. You can avoid this by utilising `Storage::temporaryUrl()` to download the file:
+
+```php
+VaporFile::make('Filename')->downloadViaTemporaryUrl(),
+```
