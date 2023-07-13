@@ -4,9 +4,7 @@
          backupGlobals="false"
          colors="true"
          processIsolation="false"
-         stopOnFailure="false"
-         cacheDirectory=".phpunit.cache"
-         backupStaticProperties="false">
+         stopOnFailure="false">
     <coverage includeUncoveredFiles="false">
         <include>
             <directory suffix=".php">src/</directory>
