@@ -1,6 +1,6 @@
 <?php
 
-namespace NovaKit\NovaOnVapor\Tests;
+namespace Workbench\App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Nova;
