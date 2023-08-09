@@ -7,16 +7,6 @@ use NovaKit\NovaOnVapor\Tests\TestCase;
 
 class UserCommandTest extends TestCase
 {
-    /**
-     * Define database migrations.
-     *
-     * @return void
-     */
-    protected function defineDatabaseMigrations()
-    {
-        $this->loadLaravelMigrations();
-    }
-
     /** @test */
     public function it_can_create_user()
     {
