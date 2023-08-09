@@ -2,7 +2,9 @@
 
 namespace Workbench\App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -16,6 +18,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::initialPath('/resources/users');
     }
 
     /**
@@ -73,7 +77,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function resources()
     {
         Nova::resources([
-            Tests\Fixtures\Nova\User::class,
+            \Workbench\App\Nova\Subscriber::class,
+            \Workbench\App\Nova\User::class,
         ]);
     }
 

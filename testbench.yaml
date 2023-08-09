@@ -4,3 +4,9 @@ providers:
 
 env:
   - SEND_QUERIES_TO_RAY=false
+
+seeders:
+  - Workbench\Database\Seeders\DatabaseSeeder
+
+workbench:
+  start: /nova

@@ -33,7 +33,7 @@
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
         "nunomaduro/larastan": "^1.0.1 || ^2.4",
         "orchestra/canvas": "^6.10.3 || ^7.2.1 || ^8.0",
-        "orchestra/testbench": "^6.29 || ^7.26 || ^8.6",
+        "orchestra/testbench": "^6.29.1 || ^7.26.1 || ^8.6.2",
         "phpunit/phpunit": "^9.6"
     },
     "repositories": [
@@ -60,7 +60,17 @@
             "@php vendor/bin/phpstan analyse",
             "@composer run test"
         ],
-        "test": "@php vendor/bin/phpunit -c ./ --color"
+        "test": "@php vendor/bin/phpunit -c ./ --color",
+        "build": [
+            "@composer run prepare",
+            "@php vendor/bin/testbench vendor:publish --tag=laravel-assets --ansi --force",
+            "@php vendor/bin/testbench workbench:create-sqlite-db",
+            "@php vendor/bin/testbench migrate:refresh"
+        ],
+        "start": [
+            "@composer run build",
+            "@php vendor/bin/testbench serve"
+        ]
     },
     "prefer-stable": true,
     "minimum-stability": "dev"
