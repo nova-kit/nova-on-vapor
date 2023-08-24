@@ -18,7 +18,9 @@
         "psr-4": {
             "NovaKit\\NovaOnVapor\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\": "workbench/database/"
+            "Workbench\\Database\\": "workbench/database/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
     "require": {
@@ -31,6 +33,7 @@
     "require-dev": {
         "laravel/nova": "^4.14",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
+        "nova-kit/nova-packages-tool": "^1.13",
         "nunomaduro/larastan": "^1.0.1 || ^2.4",
         "orchestra/testbench": "^6.31 || ^7.28 || ^8.8",
         "phpunit/phpunit": "^9.6"
@@ -52,22 +55,26 @@
         }
     },
     "scripts": {
-        "post-autoload-dump": "@composer run prepare",
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
         "prepare": "@php vendor/bin/testbench package:discover --ansi",
         "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
-        "ci": [
-            "@composer run prepare",
-            "@php vendor/bin/phpstan analyse",
-            "@composer run test"
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "lint": [
+            "pint",
+            "@php vendor/bin/phpstan analyse"
         ],
         "test": "@php vendor/bin/phpunit -c ./ --color",
-        "build": [
-            "@composer run prepare",
-            "@php vendor/bin/testbench workbench:build --ansi"
-        ],
-        "start": [
-            "@composer run build",
+        "serve": [
+            "@build",
             "@php vendor/bin/testbench serve"
+        ],
+        "ci": [
+            "@prepare",
+            "@lint",
+            "@test"
         ]
     },
     "prefer-stable": true,
