@@ -18,7 +18,6 @@
         "psr-4": {
             "NovaKit\\NovaOnVapor\\Tests\\": "tests/",
             "Workbench\\App\\": "workbench/app/",
-            "Workbench\\Database\\": "workbench/database/",
             "Workbench\\Database\\Factories\\": "workbench/database/factories/",
             "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
@@ -33,7 +32,7 @@
     "require-dev": {
         "laravel/nova": "^4.14",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
-        "nova-kit/nova-packages-tool": "^1.13",
+        "nova-kit/nova-devtool": "^1.3",
         "nunomaduro/larastan": "^1.0.1 || ^2.4",
         "orchestra/testbench": "^6.31 || ^7.28 || ^8.8",
         "phpunit/phpunit": "^9.6",
