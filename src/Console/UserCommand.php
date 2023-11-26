@@ -43,6 +43,7 @@ class UserCommand extends Command
      *
      * @return void
      */
+    #[\Override]
     protected function configure()
     {
         $this->ignoreValidationErrors();
