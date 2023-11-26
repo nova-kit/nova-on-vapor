@@ -74,6 +74,7 @@ class VaporExportAsCsv extends ExportAsCsv
      *
      * @return \Laravel\Nova\Actions\Response
      */
+    #[\Override]
     protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields)
     {
         $this->then(function ($results) {
