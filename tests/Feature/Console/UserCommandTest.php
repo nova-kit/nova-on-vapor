@@ -7,8 +7,7 @@ use NovaKit\NovaOnVapor\Tests\TestCase;
 
 class UserCommandTest extends TestCase
 {
-    /** @test */
-    public function it_can_create_user()
+    public function test_it_can_create_user()
     {
         $this->withoutMockingConsoleOutput();
 

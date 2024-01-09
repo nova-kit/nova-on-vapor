@@ -30,10 +30,10 @@
         "nova-kit/nova-queued-export-as-csv": "^1.2"
     },
     "require-dev": {
+        "larastan/larastan": "^1.0.1 || ^2.4",
         "laravel/nova": "^4.14",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
         "nova-kit/nova-devtool": "^1.3",
-        "nunomaduro/larastan": "^1.0.1 || ^2.4",
         "orchestra/testbench": "^6.31 || ^7.28 || ^8.8",
         "phpunit/phpunit": "^9.6",
         "nova-kit/nova-devtool": "^1.2.1"
