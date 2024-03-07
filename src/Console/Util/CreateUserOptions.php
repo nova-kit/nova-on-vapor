@@ -42,7 +42,7 @@ class CreateUserOptions
     /**
      * Prompt the user for input.
      */
-    public function ask(string $question, string $default = null): array
+    public function ask(string $question, ?string $default = null): array
     {
         return [$this->parseQuestion($question), null, InputOption::VALUE_REQUIRED, '', $default];
     }
