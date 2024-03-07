@@ -27,7 +27,7 @@
         "composer-runtime-api": "^2.2",
         "illuminate/support": "^8.83.4 || ^9.51 || ^10.0 || ^11.0",
         "laravel/vapor-core": "^2.37",
-        "nova-kit/nova-queued-export-as-csv": "dev-develop"
+        "nova-kit/nova-queued-export-as-csv": "^1.4"
     },
     "require-dev": {
         "larastan/larastan": "^2.4",
