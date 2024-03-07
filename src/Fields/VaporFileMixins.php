@@ -17,7 +17,7 @@ class VaporFileMixins
      */
     public function downloadViaTemporaryUrl()
     {
-        return function (DateTimeInterface $expiration = null) {
+        return function (?DateTimeInterface $expiration = null) {
             return $this->download(function ($request, $model, $disk, $value) use ($expiration) {
                 return redirect(
                     Storage::disk($disk)->temporaryUrl($value, $expiration ?? now()->addMinutes(5))
