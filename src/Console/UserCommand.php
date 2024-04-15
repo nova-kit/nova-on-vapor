@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
 use Laravel\Prompts\Prompt;
-use Laravel\Prompts\TextPrompt;
 use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -51,9 +50,9 @@ class UserCommand extends Command
         $this->setName($this->name)
             ->setDescription($this->description);
 
-       // if (class_exists(Prompt::class) && method_exists(Prompt::class, 'interactive')) {
+        if (class_exists(Prompt::class) && method_exists(Prompt::class, 'interactive')) {
             Prompt::interactive(false);
-        //}
+        }
     }
 
     /** {@inheritDoc} */
