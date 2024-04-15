@@ -8,7 +8,6 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
 use Laravel\Prompts\Prompt;
 use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
-use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
