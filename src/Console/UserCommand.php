@@ -49,10 +49,6 @@ class UserCommand extends Command
 
         $this->setName($this->name)
             ->setDescription($this->description);
-
-        if (class_exists(Prompt::class) && method_exists(Prompt::class, 'interactive')) {
-            Prompt::interactive(false);
-        }
     }
 
     /** {@inheritDoc} */
@@ -60,15 +56,20 @@ class UserCommand extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $input->setInteractive(false);
+
+        if (class_exists(Prompt::class)) {
+            Prompt::fallbackWhen(true);
+
+            if (method_exists(Prompt::class, 'interactive')) {
+                Prompt::interactive(false);
+            }
+        }
     }
 
     /** {@inheritDoc} */
     #[\Override]
     protected function specifyParameters()
     {
-        if (class_exists(Prompt::class)) {
-            Prompt::fallbackWhen(true);
-        }
 
         $this->originalCreateUserCommandCallback = Nova::$createUserCommandCallback;
 

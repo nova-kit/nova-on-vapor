@@ -22,7 +22,7 @@ class CreateUserOptions
     /**
      * The questions callback.
      *
-     * @var callable():(\Illuminate\Support\Collection<int, array>)
+     * @var callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array
      */
     protected $questionsCallback;
 
