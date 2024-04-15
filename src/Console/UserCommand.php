@@ -59,7 +59,6 @@ class UserCommand extends Command
     #[\Override]
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-
         $input->setInteractive(false);
     }
 
