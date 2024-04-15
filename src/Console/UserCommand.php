@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
-use Laravel\Prompts\Prompt;
+use Laravel\Prompts;
 use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,11 +57,11 @@ class UserCommand extends Command
     {
         $input->setInteractive(false);
 
-        if (class_exists(Prompt::class)) {
-            Prompt::fallbackWhen(true);
+        if (class_exists(Prompts\Prompt::class)) {
+            Prompts\Prompt::fallbackWhen(true);
 
-            if (method_exists(Prompt::class, 'interactive')) {
-                Prompt::interactive(false);
+            if (method_exists(Prompts\Prompt::class, 'interactive')) {
+                Prompts\Prompt::interactive(false);
             }
         }
     }
@@ -107,6 +107,16 @@ class UserCommand extends Command
      */
     protected static function defaultCreateUserCommandCallback()
     {
+        if (class_exists(Prompts\Prompt::class)) {
+            return function ($command) {
+                return [
+                    new Prompts\TextPrompt(label: 'Name', required: true),
+                    new Prompts\TextPrompt(label: 'Email Address', required: true),
+                    new Prompts\PasswordPrompt(label: 'Password', required: true),
+                ];
+            };
+        }
+
         return function ($command) {
             return [
                 $command->ask('Name'),

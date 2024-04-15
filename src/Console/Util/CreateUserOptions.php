@@ -7,7 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Laravel\Prompts\Prompt;
+use Laravel\Prompts;
 use Symfony\Component\Console\Input\InputOption;
 
 class CreateUserOptions
@@ -81,10 +81,31 @@ class CreateUserOptions
     public function toCommandOptions(Command $command): void
     {
         $this->resolveQuestions()->each(function ($question) use ($command) {
-            if (is_array($question)) {
-                $command->addOption(...$question);
-            }
+            /** @var (\Closure():(\Laravel\Prompts\Prompt|array))|\Laravel\Prompts\Prompt|array $question */
+            with(value($question), function ($question) use ($command) {
+                /** @var \Laravel\Prompts\Prompt|array $question */
+                if ($question instanceof Prompts\Prompt) {
+                    $this->resolveOptionFromPrompt($command, $question);
+                } elseif (is_array($question)) {
+                    $command->addOption(...$question);
+                }
+            });
         });
+    }
+
+    protected function resolveOptionFromPrompt(Command $command, Prompts\Prompt $question): void
+    {
+        $label = $this->parseQuestion($question->label);
+        $default = property_exists($question, 'default') ? $question->default : '';
+        $required = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
+
+        if ($question instanceof Prompts\MultiSelectPrompt || $question instanceof Prompts\MultiSearchPrompt) {
+            $command->addOption(...[$label, null, $required | InputOption::VALUE_IS_ARRAY, $default]);
+        } elseif ($question instanceof Prompts\ConfirmPrompt) {
+            $command->addOption(...[$label, null, $required | InputOption::VALUE_NONE, $default]);
+        } else {
+            $command->addOption(...[$label, null, $required, $default]);
+        }
     }
 
     /**
@@ -96,8 +117,22 @@ class CreateUserOptions
     {
         return function () use ($command) {
             return $this->resolveQuestions()->transform(function ($question) use ($command) {
-                $key = $question[0];
-                $variant = $question[2];
+                $question = value($question);
+
+                if ($question instanceof Prompts\Prompt) {
+                    $key = $this->parseQuestion($question->label);
+                    $variant = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
+
+                    if ($question instanceof Prompts\MultiSelectPrompt || $question instanceof Prompts\MultiSearchPrompt) {
+                        $variant = $variant | InputOption::VALUE_IS_ARRAY;
+                    } elseif ($question instanceof Prompts\ConfirmPrompt) {
+                        $variant = $variant | InputOption::VALUE_NONE;
+                    }
+                } else {
+                    $key = $question[0];
+                    $variant = $question[2];
+                }
+
                 $value = $command->hasOption($key) ? $command->option($key) : null;
 
                 if ($variant === InputOption::VALUE_REQUIRED && is_null($value)) {
