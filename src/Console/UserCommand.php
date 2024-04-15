@@ -70,7 +70,6 @@ class UserCommand extends Command
     #[\Override]
     protected function specifyParameters()
     {
-
         $this->originalCreateUserCommandCallback = Nova::$createUserCommandCallback;
 
         $this->createUserOptions = new CreateUserOptions(
