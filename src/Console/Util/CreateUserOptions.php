@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Laravel\Prompts\Prompt;
 use Symfony\Component\Console\Input\InputOption;
 
 class CreateUserOptions
@@ -25,7 +26,7 @@ class CreateUserOptions
      */
     public function __construct(callable $callback)
     {
-        $this->questions = new Collection(call_user_func($callback, $this));
+        $this->questions = Collection::make(call_user_func($callback, $this));
     }
 
     /**
@@ -73,7 +74,9 @@ class CreateUserOptions
     public function toCommandOptions(Command $command): void
     {
         $this->questions->each(function ($question) use ($command) {
-            $command->addOption(...$question);
+            if (is_array($question)) {
+                $command->addOption(...$question);
+            }
         });
     }
 
