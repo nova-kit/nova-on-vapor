@@ -7,6 +7,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Laravel\Prompts\Prompt;
 use Symfony\Component\Console\Input\InputOption;
 
 class CreateUserOptions
@@ -14,18 +15,25 @@ class CreateUserOptions
     /**
      * List of create user options.
      *
-     * @var \Illuminate\Support\Collection<int, array>
+     * @var \Illuminate\Support\Collection<int, array>|null
      */
-    protected $questions;
+    protected $questions = null;
+
+    /**
+     * The questions callback.
+     *
+     * @var callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array
+     */
+    protected $questionsCallback;
 
     /**
      * Construct a new Create User Options.
      *
-     * @param  callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array  $callback
+     * @param  callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array  $questionsCallback
      */
-    public function __construct(callable $callback)
+    public function __construct(callable $questionsCallback)
     {
-        $this->questions = new Collection(call_user_func($callback, $this));
+        $this->questionsCallback = $questionsCallback;
     }
 
     /**
@@ -72,8 +80,10 @@ class CreateUserOptions
      */
     public function toCommandOptions(Command $command): void
     {
-        $this->questions->each(function ($question) use ($command) {
-            $command->addOption(...$question);
+        $this->resolveQuestions()->each(function ($question) use ($command) {
+            if (is_array($question)) {
+                $command->addOption(...$question);
+            }
         });
     }
 
@@ -85,7 +95,7 @@ class CreateUserOptions
     public function toCommandCallback(Command $command): Closure
     {
         return function () use ($command) {
-            return $this->questions->transform(function ($question) use ($command) {
+            return $this->resolveQuestions()->transform(function ($question) use ($command) {
                 $key = $question[0];
                 $variant = $question[2];
                 $value = $command->hasOption($key) ? $command->option($key) : null;
@@ -113,5 +123,19 @@ class CreateUserOptions
         }
 
         return Str::slug($question);
+    }
+
+    /**
+     * Resolve the available questions.
+     *
+     * @return \Illuminate\Support\Collection<int, array>
+     */
+    protected function resolveQuestions(): Collection
+    {
+        if (is_null($this->questions)) {
+            $this->questions = Collection::make(call_user_func($this->questionsCallback, $this));
+        }
+
+        return $this->questions;
     }
 }

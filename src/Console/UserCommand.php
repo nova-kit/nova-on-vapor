@@ -6,7 +6,10 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
+use Laravel\Prompts\Prompt;
 use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class UserCommand extends Command
 {
@@ -38,11 +41,7 @@ class UserCommand extends Command
      */
     protected $originalCreateUserCommandCallback;
 
-    /**
-     * Configure the command options.
-     *
-     * @return void
-     */
+    /** {@inheritDoc} */
     #[\Override]
     protected function configure()
     {
@@ -50,7 +49,27 @@ class UserCommand extends Command
 
         $this->setName($this->name)
             ->setDescription($this->description);
+    }
 
+    /** {@inheritDoc} */
+    #[\Override]
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $input->setInteractive(false);
+
+        if (class_exists(Prompt::class)) {
+            Prompt::fallbackWhen(true);
+
+            if (method_exists(Prompt::class, 'interactive')) {
+                Prompt::interactive(false);
+            }
+        }
+    }
+
+    /** {@inheritDoc} */
+    #[\Override]
+    protected function specifyParameters()
+    {
         $this->originalCreateUserCommandCallback = Nova::$createUserCommandCallback;
 
         $this->createUserOptions = new CreateUserOptions(
