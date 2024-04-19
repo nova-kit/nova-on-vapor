@@ -15,25 +15,19 @@ class CreateUserOptions
     /**
      * List of create user options.
      *
-     * @var \Illuminate\Support\Collection<int, array>|null
+     * @var \Illuminate\Support\Collection<int, array|\Laravel\Prompts\Prompt>|null
      */
-    protected $questions = null;
-
-    /**
-     * The questions callback.
-     *
-     * @var callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array
-     */
-    protected $questionsCallback;
+    protected ?Collection $questions = null;
 
     /**
      * Construct a new Create User Options.
      *
      * @param  callable(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array  $questionsCallback
      */
-    public function __construct(callable $questionsCallback)
-    {
-        $this->questionsCallback = $questionsCallback;
+    public function __construct(
+        protected $questionsCallback
+    ) {
+        //
     }
 
     /**
@@ -93,9 +87,14 @@ class CreateUserOptions
         });
     }
 
+    /**
+     * Resolve option from instance of prompt.
+     *
+     * @param  \Laravel\Prompts\Prompt  $question
+     */
     protected function resolveOptionFromPrompt(Command $command, Prompts\Prompt $question): void
     {
-        $label = $this->parseQuestion($question->label);
+        $label = $this->parseQuestion($question->label); /** @phpstan-ignore-line */
         $default = property_exists($question, 'default') ? $question->default : '';
         $required = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
 
@@ -117,10 +116,10 @@ class CreateUserOptions
     {
         return function () use ($command) {
             return $this->resolveQuestions()->transform(function ($question) use ($command) {
-                $question = value($question);
+                $question = value($question); /** @phpstan-ignore-line */
 
                 if ($question instanceof Prompts\Prompt) {
-                    $key = $this->parseQuestion($question->label);
+                    $key = $this->parseQuestion($question->label); /** @phpstan-ignore-line */
                     $variant = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
 
                     if ($question instanceof Prompts\MultiSelectPrompt || $question instanceof Prompts\MultiSearchPrompt) {
@@ -163,7 +162,7 @@ class CreateUserOptions
     /**
      * Resolve the available questions.
      *
-     * @return \Illuminate\Support\Collection<int, array>
+     * @return \Illuminate\Support\Collection<int, array|\Laravel\Prompts\Prompt>
      */
     protected function resolveQuestions(): Collection
     {

@@ -2,6 +2,7 @@
 
 namespace NovaKit\NovaOnVapor\Console;
 
+use Closure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Nova\Nova;
@@ -97,7 +98,7 @@ class UserCommand extends Command
 
         Nova::$createUserCommandCallback = $this->originalCreateUserCommandCallback;
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 
     /**
@@ -105,7 +106,7 @@ class UserCommand extends Command
      *
      * @return \Closure(\NovaKit\NovaOnVapor\Console\Util\CreateUserOptions):array
      */
-    protected static function defaultCreateUserCommandCallback()
+    protected static function defaultCreateUserCommandCallback(): Closure
     {
         if (class_exists(Prompts\Prompt::class)) {
             return function ($command) {
@@ -131,7 +132,7 @@ class UserCommand extends Command
      *
      * @return \Closure(string, string, string):\Illuminate\Database\Eloquent\Model
      */
-    protected static function defaultCreateUserCallback()
+    protected static function defaultCreateUserCallback(): Closure
     {
         return function ($name, $email, $password) {
             $model = Util::userModel();
