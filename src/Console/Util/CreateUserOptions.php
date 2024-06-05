@@ -95,7 +95,7 @@ class CreateUserOptions
 
     protected function resolveOptionFromPrompt(Command $command, Prompts\Prompt $question): void
     {
-        $label = $this->parseQuestion($question->label);
+        $label = $this->parseQuestion($question->label); /** @phpstan-ignore property.notFound */
         $default = property_exists($question, 'default') ? $question->default : '';
         $required = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
 
@@ -117,10 +117,11 @@ class CreateUserOptions
     {
         return function () use ($command) {
             return $this->resolveQuestions()->transform(function ($question) use ($command) {
-                $question = value($question);
+                $question = value($question); /** @phpstan-ignore larastan.uselessConstructs.value */
 
+                /** @var \Laravel\Prompts\Prompt|array $question */
                 if ($question instanceof Prompts\Prompt) {
-                    $key = $this->parseQuestion($question->label);
+                    $key = $this->parseQuestion($question->label); /** @phpstan-ignore property.notFound */
                     $variant = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;
 
                     if ($question instanceof Prompts\MultiSelectPrompt || $question instanceof Prompts\MultiSearchPrompt) {
