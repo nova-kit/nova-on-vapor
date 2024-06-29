@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "larastan/larastan": "^2.4",
-        "laravel/nova": "*",
+        "laravel/nova": "dev-develop",
         "laravel/pint": "^1.6",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
         "nova-kit/nova-devtool": "^2.0",
