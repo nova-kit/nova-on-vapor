@@ -13,6 +13,7 @@ seeders:
 
 workbench:
   start: /nova
+  user: nova@laravel.com
   build:
     - asset-publish
     - create-sqlite-db

@@ -33,15 +33,19 @@
     "require-dev": {
         "larastan/larastan": "^2.4",
         "laravel/nova": "dev-develop",
+        "laravel/nova-devtool": "^1.0",
         "laravel/pint": "^1.6",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
-        "nova-kit/nova-devtool": "^2.0",
         "orchestra/testbench": "^8.21 || ^9.0"
     },
     "repositories": [
         {
             "type": "composer",
             "url": "https://nova.laravel.com"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/laravel/nova-devtool"
         }
     ],
     "extra": {
@@ -68,6 +72,7 @@
         ],
         "test": "@php vendor/bin/phpunit -c ./ --color",
         "serve": [
+            "Composer\\Config::disableProcessTimeout",
             "@build",
             "@php vendor/bin/testbench serve"
         ],
