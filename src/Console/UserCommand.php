@@ -137,7 +137,8 @@ class UserCommand extends Command
         return function ($name, $email, $password) {
             $model = Util::userModel();
 
-            return tap((new $model())->forceFill([
+            /** @phpstan-ignore method.notFound */
+            return tap((new $model)->forceFill([
                 'name' => $name,
                 'email' => $email,
                 'password' => Hash::make($password),

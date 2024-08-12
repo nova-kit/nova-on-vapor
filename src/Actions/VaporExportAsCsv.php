@@ -68,11 +68,9 @@ class VaporExportAsCsv extends ExportAsCsv
 
     /**
      * Perform the action request using custom dispatch handler.
-     *
-     * @return \Laravel\Nova\Actions\Response
      */
     #[\Override]
-    protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields)
+    protected function dispatchRequestUsing(ActionRequest $request, Response $response, ActionFields $fields): Response
     {
         $this->then(function ($results) {
             return $results->first();
@@ -110,7 +108,7 @@ class VaporExportAsCsv extends ExportAsCsv
             'nova-actions-export-as-csv', new File($exportedFilename), $exportFilename, 'public'
         );
 
-        (new Filesystem())->delete($exportedFilename);
+        (new Filesystem)->delete($exportedFilename);
 
         return $response->successful([
             response()->json(

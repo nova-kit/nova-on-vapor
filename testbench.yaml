@@ -15,7 +15,7 @@ workbench:
   start: /nova
   user: nova@laravel.com
   build:
-    - asset-publish
+    - asset:publish
     - create-sqlite-db
     - db:wipe
     - migrate:refresh

@@ -42,7 +42,7 @@ class LaravelServiceProvider extends ServiceProvider
      */
     protected function registerFieldsMacros()
     {
-        VaporFile::mixin(new Fields\VaporFileMixins());
+        VaporFile::mixin(new Fields\VaporFileMixins);
     }
 
     /**

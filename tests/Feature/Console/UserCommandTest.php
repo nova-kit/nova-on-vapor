@@ -1,27 +1,26 @@
 <?php
 
-namespace NovaKit\NovaOnVapor\Tests\Feature\Console;
+use function Pest\Laravel\artisan;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\withoutMockingConsoleOutput;
 
-use Illuminate\Support\Facades\Auth;
-use NovaKit\NovaOnVapor\Tests\TestCase;
+beforeEach(function () {
+    withoutMockingConsoleOutput();
+});
 
-class UserCommandTest extends TestCase
-{
-    public function test_it_can_create_user()
-    {
-        $this->withoutMockingConsoleOutput();
+it('can create user via `nova:vapor-user` command', function () {
+    artisan('nova:vapor-user', [
+        '--name' => 'Taylor Otwell',
+        '--email' => 'taylor@laravel.com',
+        '--password' => 'secret',
+    ]);
 
-        $this->artisan('nova:vapor-user', [
-            '--name' => 'Taylor Otwell',
-            '--email' => 'taylor@laravel.com',
-            '--password' => 'secret',
-        ]);
+    assertDatabaseHas('users', [
+        'name' => 'Taylor Otwell',
+        'email' => 'taylor@laravel.com',
+    ]);
 
-        $this->assertDatabaseHas('users', [
-            'name' => 'Taylor Otwell',
-            'email' => 'taylor@laravel.com',
-        ]);
-
-        $this->assertTrue(Auth::attempt(['email' => 'taylor@laravel.com', 'password' => 'secret']));
-    }
-}
+    expect(
+        Auth::attempt(['email' => 'taylor@laravel.com', 'password' => 'secret'])
+    )->toBeTrue();
+});

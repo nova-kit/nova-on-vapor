@@ -117,7 +117,6 @@ class CreateUserOptions
         return function () use ($command) {
             return $this->resolveQuestions()->transform(function ($question) use ($command) {
                 $question = value($question); /** @phpstan-ignore-line */
-
                 if ($question instanceof Prompts\Prompt) {
                     $key = $this->parseQuestion($question->label); /** @phpstan-ignore-line */
                     $variant = $question->required === true ? InputOption::VALUE_REQUIRED : InputOption::VALUE_OPTIONAL;

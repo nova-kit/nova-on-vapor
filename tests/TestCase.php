@@ -1,12 +1,12 @@
 <?php
 
-namespace NovaKit\NovaOnVapor\Tests;
+namespace Tests;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Orchestra\Testbench\Concerns\WithWorkbench;
 
-class TestCase extends \Orchestra\Testbench\TestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    use RefreshDatabase;
+    use LazilyRefreshDatabase;
     use WithWorkbench;
 }
