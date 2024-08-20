@@ -9,25 +9,13 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\Util;
 use Laravel\Prompts;
 use NovaKit\NovaOnVapor\Console\Util\CreateUserOptions;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(name: 'nova:vapor-user', description: 'Create a new user')]
 class UserCommand extends Command
 {
-    /**
-     * The console command name.
-     *
-     * @var string
-     */
-    protected $name = 'nova:vapor-user';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Create a new user';
-
     /**
      * The create user options instance.
      *
@@ -48,8 +36,7 @@ class UserCommand extends Command
     {
         $this->ignoreValidationErrors();
 
-        $this->setName($this->name)
-            ->setDescription($this->description);
+        parent::configure();
     }
 
     /** {@inheritDoc} */

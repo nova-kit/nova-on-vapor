@@ -12,10 +12,8 @@ class LaravelServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->registerCommands();
         $this->registerFieldsMacros();
@@ -23,10 +21,8 @@ class LaravelServiceProvider extends ServiceProvider
 
     /**
      * Register the tool's commands.
-     *
-     * @return void
      */
-    protected function registerCommands()
+    protected function registerCommands(): void
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -37,20 +33,16 @@ class LaravelServiceProvider extends ServiceProvider
 
     /**
      * Register fields macros.
-     *
-     * @return void
      */
-    protected function registerFieldsMacros()
+    protected function registerFieldsMacros(): void
     {
         VaporFile::mixin(new Fields\VaporFileMixins);
     }
 
     /**
      * Bootstrap services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->app->booted(function () {
             $this->routes();
@@ -70,10 +62,8 @@ class LaravelServiceProvider extends ServiceProvider
 
     /**
      * Register the tool's routes.
-     *
-     * @return void
      */
-    protected function routes()
+    protected function routes(): void
     {
         if ($this->app->routesAreCached()) {
             return;

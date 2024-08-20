@@ -34,21 +34,29 @@
         "larastan/larastan": "^2.4",
         "laravel/nova": "dev-develop",
         "laravel/nova-devtool": "^1.0",
-        "laravel/pint": "^1.6",
+        "laravel/pint": "^1.17",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
         "orchestra/testbench": "^8.21 || ^9.0",
         "orchestra/pest-plugin-testbench": "^2.0"
     },
+    "conflict": {
+        "laravel/nova": "<5.0.0 || >=6.0.0"
+    },
     "repositories": [
         {
-            "type": "composer",
-            "url": "https://nova.laravel.com"
+            "type": "vcs",
+            "url": "https://github.com/laravel/nova"
         },
         {
             "type": "vcs",
             "url": "https://github.com/laravel/nova-devtool"
         }
     ],
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-develop": "2.x-dev"
@@ -84,10 +92,5 @@
         ]
     },
     "prefer-stable": true,
-    "minimum-stability": "dev",
-    "config": {
-        "allow-plugins": {
-            "pestphp/pest-plugin": true
-        }
-    }
+    "minimum-stability": "dev"
 }
