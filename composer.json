@@ -25,15 +25,15 @@
     "require": {
         "php": "^8.1",
         "composer-runtime-api": "^2.2",
-        "illuminate/support": "^10.34 || ^11.0",
+        "illuminate/support": "^10.48.23 || ^11.35",
         "laravel/vapor-core": "^2.37",
-        "nova-kit/nova-queued-export-as-csv": "^2.0",
-        "symfony/polyfill-php83": "^1.28"
+        "nova-kit/nova-queued-export-as-csv": "^2.1",
+        "symfony/polyfill-php83": "^1.31"
     },
     "require-dev": {
         "larastan/larastan": "^2.4",
         "laravel/nova": "^5.0",
-        "laravel/nova-devtool": "^1.0",
+        "laravel/nova-devtool": "^1.0.1",
         "laravel/pint": "^1.17",
         "league/flysystem-aws-s3-v3": "^1.0 || ^3.0",
         "orchestra/testbench": "^8.21 || ^9.0",
@@ -43,14 +43,7 @@
         "laravel/nova": "<5.0.0 || >=6.0.0"
     },
     "repositories": [
-        {
-            "type": "artifact",
-            "url": "artifacts"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/laravel/nova-devtool"
-        }
+        { "type": "composer", "url": "https://nova.laravel.com" }
     ],
     "config": {
         "allow-plugins": {
@@ -58,9 +51,6 @@
         }
     },
     "extra": {
-        "branch-alias": {
-            "dev-develop": "2.x-dev"
-        },
         "laravel": {
             "providers": [
                 "NovaKit\\NovaOnVapor\\LaravelServiceProvider"
