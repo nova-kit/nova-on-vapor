@@ -46,7 +46,7 @@ jobs:
         uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "--prefer-dist --no-cache --with=laravel/framework:${{ matrix.laravel }}"
+          composer-options: "--prefer-dist --no-cache --with=illuminate/support:${{ matrix.laravel }}"
 
       - name: Installed dependencies
         run: composer show -D
@@ -94,7 +94,7 @@ jobs:
         uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "--prefer-dist --no-cache --with=laravel/framework:${{ matrix.laravel }}"
+          composer-options: "--prefer-dist --no-cache --with=illuminate/support:${{ matrix.laravel }}"
 
       - name: Installed dependencies
         run: composer show -D
@@ -142,7 +142,7 @@ jobs:
         uses: "ramsey/composer-install@v3"
         with:
           dependency-versions: "${{ matrix.dependencies }}"
-          composer-options: "--prefer-dist --no-cache --with=laravel/framework:${{ matrix.laravel }}"
+          composer-options: "--prefer-dist --no-cache --with=illuminate/support:${{ matrix.laravel }}"
 
       - name: Installed dependencies
         run: composer show -D
