@@ -48,6 +48,9 @@
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
+        },
+        "audit": {
+            "block-abandoned": true
         }
     },
     "extra": {
